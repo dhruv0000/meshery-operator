@@ -380,7 +380,7 @@ spec:
         - --enable-leader-election
         command:
         - /manager
-        image: layer5/meshery-operator:stable-latest
+        image: dhruv0000/meshery-operator:latest
         imagePullPolicy: Always
         name: manager
         ports:
