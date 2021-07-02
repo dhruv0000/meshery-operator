@@ -80,7 +80,7 @@ func CheckHealth(ctx context.Context, m *mesheryv1alpha1.Broker, client *kuberne
 }
 
 func GetEndpoint(ctx context.Context, log logr.Logger, m *mesheryv1alpha1.Broker, client *kubernetes.Clientset, url string) error {
-	endpoint, err := mesherykube.GetServiceEndpoint(context.TODO(), client, &mesherykube.ServiceOptions{
+	endpoint, err := mesherykube.GetServiceEndpoint(context.TODO(), log, client, &mesherykube.ServiceOptions{
 		Name:         m.ObjectMeta.Name,
 		Namespace:    m.ObjectMeta.Namespace,
 		PortSelector: "client",
@@ -92,5 +92,7 @@ func GetEndpoint(ctx context.Context, log logr.Logger, m *mesheryv1alpha1.Broker
 
 	m.Status.Endpoint.External = fmt.Sprintf("%s:%d", endpoint.External.Address, endpoint.External.Port)
 	m.Status.Endpoint.Internal = fmt.Sprintf("%s:%d", endpoint.Internal.Address, endpoint.Internal.Port)
+
+	log.Info("GetEndpoint Endpoint", m.Status.Endpoint.External, m.Status.Endpoint.Internal)
 	return nil
 }
